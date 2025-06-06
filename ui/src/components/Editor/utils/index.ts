@@ -119,7 +119,6 @@ export function htmlRender(el: HTMLElement | null, config?: htmlRenderConfig) {
       tooltipInstance?.setContent({ '.tooltip-inner': copySuccessText });
       const myTooltipEl = document.querySelector(`#${uniqueId}`);
       myTooltipEl?.addEventListener('hidden.bs.tooltip', () => {
-        console.log('hidden.bs.tooltip');
         tooltipInstance.setContent({ '.tooltip-inner': copyText });
       });
     });
@@ -173,6 +172,16 @@ export const useEditor = ({
         placeholder(placeholderText),
         EditorView.lineWrapping,
         editableCompartment.of(EditorView.editable.of(true)),
+        EditorView.domEventHandlers({
+          paste(event) {
+            const clipboard = event.clipboardData as DataTransfer;
+            const htmlStr = clipboard.getData('text/html');
+            const imgRegex =
+              /<img([\s\S]*?) src\s*=\s*(['"])([\s\S]*?)\2([^>]*)>/;
+
+            return Boolean(htmlStr.match(imgRegex));
+          },
+        }),
       ],
     });
 

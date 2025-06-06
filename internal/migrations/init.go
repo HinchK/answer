@@ -160,9 +160,28 @@ func (m *Mentor) initAdminUserRoleRel() {
 }
 
 func (m *Mentor) initSiteInfoInterface() {
+	now := time.Now()
+	zoneName, offset := now.In(time.Local).Zone()
+
+	localTimezone := "UTC"
+	for _, tz := range constant.Timezones {
+		loc, err := time.LoadLocation(tz)
+		if err != nil {
+			continue
+		}
+
+		tzNow := now.In(loc)
+		tzName, tzOffset := tzNow.Zone()
+
+		if tzName == zoneName && tzOffset == offset {
+			localTimezone = tz
+			break
+		}
+	}
+
 	interfaceData := map[string]string{
 		"language":  m.userData.Language,
-		"time_zone": "UTC",
+		"time_zone": localTimezone,
 	}
 	interfaceDataBytes, _ := json.Marshal(interfaceData)
 	_, m.err = m.engine.Context(m.ctx).Insert(&entity.SiteInfo{
@@ -214,7 +233,7 @@ func (m *Mentor) initSiteInfoLegalConfig() {
 }
 
 func (m *Mentor) initSiteInfoThemeConfig() {
-	themeConfig := `{"theme":"default","theme_config":{"default":{"navbar_style":"colored","primary_color":"#0033ff"}}}`
+	themeConfig := `{"theme":"default","theme_config":{"default":{"navbar_style":"#0033ff","primary_color":"#0033ff"}}}`
 	_, m.err = m.engine.Context(m.ctx).Insert(&entity.SiteInfo{
 		Type:    "theme",
 		Content: themeConfig,
@@ -452,5 +471,4 @@ func (m *Mentor) initDefaultBadges() {
 			return
 		}
 	}
-	return
 }

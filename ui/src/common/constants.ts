@@ -86,36 +86,41 @@ export const ADMIN_LIST_STATUS = {
 export const ADMIN_NAV_MENUS = [
   {
     name: 'dashboard',
+    icon: 'speedometer',
     children: [],
   },
   {
     name: 'contents',
+    icon: 'file-earmark-text-fill',
     children: [{ name: 'questions' }, { name: 'answers' }],
   },
   {
     name: 'users',
+    icon: 'people-fill',
   },
   {
     name: 'badges',
+    icon: 'award-fill',
   },
   {
-    name: 'customize',
+    name: 'apperance',
+    icon: 'palette-fill',
     children: [
       {
         name: 'themes',
       },
       {
-        name: 'css_html',
-        path: 'css-html',
+        name: 'customize',
       },
+      { name: 'branding' },
     ],
   },
   {
     name: 'settings',
+    icon: 'gear-fill',
     children: [
       { name: 'general' },
       { name: 'interface' },
-      { name: 'branding' },
       { name: 'smtp' },
       { name: 'legal' },
       { name: 'write' },
@@ -127,6 +132,7 @@ export const ADMIN_NAV_MENUS = [
   },
   {
     name: 'plugins',
+    icon: 'plugin',
     children: [
       {
         name: 'installed_plugins',
